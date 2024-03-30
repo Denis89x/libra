@@ -1,0 +1,44 @@
+package dev.lebenkov.libra.storage.model;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "_user")
+@Getter
+@Setter
+@Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
+public class User {
+
+    @Id
+    @Column(name = "user_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    Long userId;
+
+    @NotBlank(message = "Username should not be empty")
+    @Size(min = 4, max = 25, message = "Username should be 4 - 20 symbols size")
+    @Column(name = "username")
+    String username;
+
+    @NotBlank(message = "Email should not be empty")
+    @Email(message = "Email should be correct")
+    @Column(name = "email")
+    String email;
+
+    @NotBlank(message = "Password should not be empty")
+    @Column(name = "password")
+    String password;
+
+    @Column(name = "registration_date")
+    LocalDate registrationDate;
+}
