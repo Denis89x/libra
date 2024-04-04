@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "book")
 @Getter
@@ -38,4 +41,7 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "user_id")
     User user;
+
+    @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
+    List<Review> reviews = new ArrayList<>();
 }

@@ -55,4 +55,7 @@ public class User {
 
     @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
     List<Message> receivedMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "reviewer", fetch = FetchType.LAZY)
+    List<Review> reviews = new ArrayList<>();
 }
