@@ -44,4 +44,10 @@ public class Book {
 
     @OneToMany(mappedBy = "book", fetch = FetchType.LAZY)
     List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bookSender", fetch = FetchType.LAZY)
+    List<TradeRequest> sentBooks = new ArrayList<>();
+
+    @OneToMany(mappedBy = "bookReceiver", fetch = FetchType.LAZY)
+    List<TradeRequest> receivedBooks = new ArrayList<>();
 }

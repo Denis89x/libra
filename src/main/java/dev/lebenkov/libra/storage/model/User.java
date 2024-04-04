@@ -58,4 +58,10 @@ public class User {
 
     @OneToMany(mappedBy = "reviewer", fetch = FetchType.LAZY)
     List<Review> reviews = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tradeSender", fetch = FetchType.LAZY)
+    List<TradeRequest> sentRequests = new ArrayList<>();
+
+    @OneToMany(mappedBy = "tradeReceiver", fetch = FetchType.LAZY)
+    List<TradeRequest> receivedRequests = new ArrayList<>();
 }
