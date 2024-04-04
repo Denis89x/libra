@@ -1,6 +1,5 @@
 package dev.lebenkov.libra.storage.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -10,6 +9,8 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "_user")
@@ -45,4 +46,7 @@ public class User {
     @Column(name = "registration_date")
     @JsonProperty("registration_date")
     LocalDate registrationDate;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    List<Book> books = new ArrayList<>();
 }

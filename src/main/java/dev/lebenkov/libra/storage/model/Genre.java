@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "genre")
 @Getter
@@ -23,4 +26,7 @@ public class Genre {
 
     @Column(name = "title")
     String title;
+
+    @OneToMany(mappedBy = "genre", fetch = FetchType.EAGER)
+    List<Book> books = new ArrayList<>();
 }
