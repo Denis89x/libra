@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @Entity
@@ -37,4 +40,7 @@ public class TradeRequest {
     @ManyToOne
     @JoinColumn(name = "receiver_book_id")
     Book bookReceiver;
+
+    @OneToMany(mappedBy = "tradeRequest", fetch = FetchType.LAZY)
+    List<TradeHistory> tradeHistories = new ArrayList<>();
 }
