@@ -47,6 +47,12 @@ public class User {
     @JsonProperty("registration_date")
     LocalDate registrationDate;
 
-    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     List<Book> books = new ArrayList<>();
+
+    @OneToMany(mappedBy = "sender", fetch = FetchType.LAZY)
+    List<Message> sentMessages = new ArrayList<>();
+
+    @OneToMany(mappedBy = "receiver", fetch = FetchType.LAZY)
+    List<Message> receivedMessages = new ArrayList<>();
 }
