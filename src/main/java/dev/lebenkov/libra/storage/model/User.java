@@ -43,6 +43,9 @@ public class User {
     @Column(name = "password")
     String password;
 
+    @Column(name = "role")
+    String role;
+
     @Column(name = "registration_date")
     @JsonProperty("registration_date")
     LocalDate registrationDate;

@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'dev.lebenkov'
-version = '0.0.1-SNAPSHOT'
+version = '1.0'
 
 java {
 	sourceCompatibility = '17'
@@ -32,7 +32,8 @@ dependencies {
 	implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 	implementation 'me.paulschwarz:spring-dotenv:4.0.0'
 	implementation 'org.modelmapper:modelmapper:3.1.1'
-	implementation 'org.flywaydb:flyway-core'
+/*	implementation 'org.flywaydb:flyway-core'*/
+	testImplementation 'com.h2database:h2:2.2.224'
 	compileOnly 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	annotationProcessor 'org.projectlombok:lombok'
