@@ -10,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +21,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookCrudServiceImpl implements BookCrudService {
 
+    ModelMapper modelMapper;
     BookRepository bookRepository;
     GenreRepository genreRepository;
 
@@ -43,9 +45,18 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.save(book);
     }
 
+    private Book getBookEntityById(long id) {
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " id not found!"));
+    }
+
+    private BookResponse convertBookToBookResponse(Book book) {
+        return modelMapper.map(book, BookResponse.class);
+    }
+
     @Override
     public BookResponse fetchBookById(Long id) {
-        return null;
+        return convertBookToBookResponse(getBookEntityById(id));
     }
 
     @Override
