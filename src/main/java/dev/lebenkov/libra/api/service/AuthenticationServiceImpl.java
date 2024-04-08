@@ -29,10 +29,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     AuthenticationManager authenticationManager;
 
+    private User checkUserExists(String username) {
+        return userRepository.findByUsername(username).orElseThrow(() ->
+                new UsernameNotFoundException("User with username " + username + " not found"));
+    }
+
     @Override
     public AuthResponse authenticate(AuthRequest authRequest) {
-        User account = userRepository.findByUsername(authRequest.getUsername()).orElseThrow(() ->
-                new UsernameNotFoundException("User with username " + authRequest.getUsername() + " not found"));
+        User account = checkUserExists(authRequest.getUsername());
 
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
