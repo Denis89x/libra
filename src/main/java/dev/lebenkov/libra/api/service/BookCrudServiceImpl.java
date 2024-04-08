@@ -87,8 +87,15 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.save(updatedBook);
     }
 
+    private void checkBookExistsById(long id) {
+        bookRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " not found!"));
+    }
+
     @Override
     public void deleteBookById(Long id) {
+        checkBookExistsById(id);
 
+        bookRepository.deleteById(id);
     }
 }
