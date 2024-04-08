@@ -9,7 +9,7 @@ import java.io.IOException;
 public interface TokenService {
     void saveUserToken(User user, String jwtToken);
 
-    void revokeAllUserTokens(User user  );
+    void revokeAllUserTokens(User user);
 
     void refreshToken(HttpServletRequest request, HttpServletResponse response) throws IOException;
 }

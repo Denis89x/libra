@@ -31,13 +31,17 @@ public class RegistrationServiceImpl implements RegistrationService {
     TokenService tokenService;
     AccountDetailsService accountDetailsService;
 
+    private void checkExistingUser(String username) {
+        userRepository.findByUsername(username)
+                .ifPresent(existingAccount -> {
+                    throw new UserAlreadyExistsException("User with username " + username + " already exists.");
+                });
+    }
+
     @Override
     @Transactional
     public AuthResponse register(UserRegistrationRequest userRegistrationRequest) {
-        userRepository.findByUsername(userRegistrationRequest.getUsername())
-                .ifPresent(existingAccount -> {
-                    throw new UserAlreadyExistsException("User with username " + userRegistrationRequest.getUsername() + " already exists.");
-                });
+        checkExistingUser(userRegistrationRequest.getUsername());
 
         User user = User.builder()
                 .username(userRegistrationRequest.getUsername().toLowerCase())
@@ -53,7 +57,9 @@ public class RegistrationServiceImpl implements RegistrationService {
 
         String jwtToken = jwtUtil.generateToken(userDetails);
         String refreshToken = jwtUtil.generateRefreshToken(userDetails);
+
         tokenService.saveUserToken(savedUser, jwtToken);
+
         return AuthResponse.builder()
                 .accessToken(jwtToken)
                 .refreshToken(refreshToken)
