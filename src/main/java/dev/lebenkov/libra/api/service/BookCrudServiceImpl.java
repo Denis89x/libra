@@ -61,7 +61,9 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     @Override
     public List<BookResponse> fetchAllBooks() {
-        return null;
+        return bookRepository.findAll().stream()
+                .map(this::convertBookToBookResponse)
+                .toList();
     }
 
     @Override
