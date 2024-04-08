@@ -4,6 +4,7 @@ import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import dev.lebenkov.libra.storage.dto.BookRequest;
 import dev.lebenkov.libra.storage.dto.BookResponse;
 import dev.lebenkov.libra.storage.model.Book;
+import dev.lebenkov.libra.storage.model.Genre;
 import dev.lebenkov.libra.storage.repository.BookRepository;
 import dev.lebenkov.libra.storage.repository.GenreRepository;
 import lombok.AccessLevel;
@@ -27,13 +28,17 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     SessionUserProviderService sessionUserProviderService;
 
+    private Genre fetchGenreEntityByGenreId(long genreId) {
+        return genreRepository.findByGenreId(genreId)
+                .orElseThrow(() -> new ObjectNotFoundException("Genre with " + genreId + " id not found!"));
+    }
+
     private Book createBookEntity(BookRequest bookRequest) {
         return Book.builder()
                 .title(bookRequest.getTitle())
                 .author(bookRequest.getAuthor())
                 .yearOfPublication(bookRequest.getYearOfPublication())
-                .genre(genreRepository.findByGenreId(bookRequest.getGenreId())
-                        .orElseThrow(() -> new ObjectNotFoundException("Genre with " + bookRequest.getGenreId() + " id not found!")))
+                .genre(fetchGenreEntityByGenreId(bookRequest.getGenreId()))
                 .user(sessionUserProviderService.getUserFromSession())
                 .build();
     }
@@ -66,9 +71,20 @@ public class BookCrudServiceImpl implements BookCrudService {
                 .toList();
     }
 
+    private Book updateBookFromBookRequest(Book book, BookRequest bookRequest) {
+        book.setTitle(bookRequest.getTitle());
+        book.setAuthor(bookRequest.getAuthor());
+        book.setYearOfPublication(bookRequest.getYearOfPublication());
+        book.setGenre(fetchGenreEntityByGenreId(bookRequest.getGenreId()));
+
+        return book;
+    }
+
     @Override
     public void updateBook(Long bookId, BookRequest bookRequest) {
+        Book updatedBook = updateBookFromBookRequest(getBookEntityById(bookId), bookRequest);
 
+        bookRepository.save(updatedBook);
     }
 
     @Override
