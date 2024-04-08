@@ -1,5 +1,6 @@
 package dev.lebenkov.libra.api.service;
 
+import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import dev.lebenkov.libra.storage.dto.GenreRequest;
 import dev.lebenkov.libra.storage.dto.GenreResponse;
 import dev.lebenkov.libra.storage.model.Genre;
@@ -29,9 +30,18 @@ public class GenreCrudServiceImpl implements GenreCrudService {
         genreRepository.save(convertGenreRequestToGenre(genreRequest));
     }
 
+    private GenreResponse convertGenreToGenreResponse(Genre genre) {
+        return modelMapper.map(genre, GenreResponse.class);
+    }
+
+    private Genre findGenreEntityByGenreId(long genreId) {
+        return genreRepository.findByGenreId(genreId)
+                .orElseThrow(() -> new ObjectNotFoundException("Genre with " + genreId + " not found!"));
+    }
+
     @Override
     public GenreResponse fetchGenreById(Long genreId) {
-        return null;
+        return convertGenreToGenreResponse(findGenreEntityByGenreId(genreId));
     }
 
     @Override
