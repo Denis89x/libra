@@ -3,6 +3,7 @@ package dev.lebenkov.libra.api.service;
 import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import dev.lebenkov.libra.storage.dto.BookRequest;
 import dev.lebenkov.libra.storage.dto.BookResponse;
+import dev.lebenkov.libra.storage.dto.GenreResponse;
 import dev.lebenkov.libra.storage.model.Book;
 import dev.lebenkov.libra.storage.model.Genre;
 import dev.lebenkov.libra.storage.repository.BookRepository;
@@ -56,7 +57,11 @@ public class BookCrudServiceImpl implements BookCrudService {
     }
 
     private BookResponse convertBookToBookResponse(Book book) {
-        return modelMapper.map(book, BookResponse.class);
+        BookResponse bookResponse = modelMapper.map(book, BookResponse.class);
+
+        bookResponse.setGenreResponse( modelMapper.map(book.getGenre(), GenreResponse.class));
+
+        return bookResponse;
     }
 
     @Override
