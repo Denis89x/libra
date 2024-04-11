@@ -51,7 +51,7 @@ public class BookCrudServiceImpl implements BookCrudService {
     }
 
     private Book getBookEntityById(long id) {
-        return bookRepository.findById(id)
+        return bookRepository.findByBookIdAndUser_UserId(id, sessionUserProviderService.getUserFromSession().getUserId())
                 .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " id not found!"));
     }
 
