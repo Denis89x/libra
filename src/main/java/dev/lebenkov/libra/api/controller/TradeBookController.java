@@ -1,8 +1,8 @@
 package dev.lebenkov.libra.api.controller;
 
-import dev.lebenkov.libra.api.service.TradeRequestService;
-import dev.lebenkov.libra.storage.dto.TradeRequestProcessDto;
-import dev.lebenkov.libra.storage.dto.TradeRequestDto;
+import dev.lebenkov.libra.api.service.TradeService;
+import dev.lebenkov.libra.storage.dto.TradeProcess;
+import dev.lebenkov.libra.storage.dto.TradeRequest;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -18,17 +18,17 @@ import org.springframework.web.bind.annotation.RestController;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class TradeBookController {
 
-    TradeRequestService tradeRequestService;
+    TradeService tradeService;
 
     @PostMapping("/new-trade")
-    public ResponseEntity<String> newTrade(@RequestBody TradeRequestDto tradeRequest) {
-        tradeRequestService.sendTradeRequest(tradeRequest);
+    public ResponseEntity<String> newTrade(@RequestBody TradeRequest tradeRequest) {
+        tradeService.sendTradeRequest(tradeRequest);
         return ResponseEntity.ok("Trade was successfully added to the tradebook");
     }
 
     @PostMapping("/process-trade")
-    public ResponseEntity<String> processTrade(@RequestBody TradeRequestProcessDto tradeRequestProcessDto) {
-        tradeRequestService.processTradeRequest(tradeRequestProcessDto);
+    public ResponseEntity<String> processTrade(@RequestBody TradeProcess tradeProcess) {
+        tradeService.processTradeRequest(tradeProcess);
         return ResponseEntity.ok("Trade was successfully processed the trade");
     }
 }

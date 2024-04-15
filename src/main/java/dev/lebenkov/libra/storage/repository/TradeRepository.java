@@ -1,9 +1,9 @@
 package dev.lebenkov.libra.storage.repository;
 
-import dev.lebenkov.libra.storage.model.TradeRequest;
+import dev.lebenkov.libra.storage.model.Trade;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TradeRequestRepository extends JpaRepository<TradeRequest, Long> {
+public interface TradeRepository extends JpaRepository<Trade, Long> {
 }

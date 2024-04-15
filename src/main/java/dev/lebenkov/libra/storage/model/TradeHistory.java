@@ -26,5 +26,5 @@ public class TradeHistory {
 
     @ManyToOne
     @JoinColumn(name = "request_id")
-    TradeRequest tradeRequest;
+    Trade trade;
 }

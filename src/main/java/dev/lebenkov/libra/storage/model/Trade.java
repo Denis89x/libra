@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TradeRequest {
+public class Trade {
 
     @Id
     @Column(name = "request_id")

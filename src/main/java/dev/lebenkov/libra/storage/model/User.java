@@ -63,8 +63,8 @@ public class User {
     List<Review> reviews = new ArrayList<>();
 
     @OneToMany(mappedBy = "tradeSender", fetch = FetchType.LAZY)
-    List<TradeRequest> sentRequests = new ArrayList<>();
+    List<Trade> sentRequests = new ArrayList<>();
 
     @OneToMany(mappedBy = "tradeReceiver", fetch = FetchType.LAZY)
-    List<TradeRequest> receivedRequests = new ArrayList<>();
+    List<Trade> receivedRequests = new ArrayList<>();
 }

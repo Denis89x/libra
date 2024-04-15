@@ -9,10 +9,14 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TradeRequestProcessDto {
-    @JsonProperty("trade_request_id")
-    Long tradeRequestId;
+public class TradeRequest {
 
-    @JsonProperty("result_status")
-    String resultStatus;
+    @JsonProperty("trade_receiver_id")
+    Long tradeReceiverId;
+
+    @JsonProperty("book_sender_id")
+    Long bookSenderId;
+
+    @JsonProperty("book_receiver_id")
+    Long bookReceiverId;
 }
