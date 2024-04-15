@@ -27,6 +27,7 @@ public class BookCrudServiceImpl implements BookCrudService {
     BookRepository bookRepository;
     GenreRepository genreRepository;
 
+    BookRetrievalService bookRetrievalService;
     SessionUserProviderService sessionUserProviderService;
 
     private Genre fetchGenreEntityByGenreId(long genreId) {
@@ -51,11 +52,6 @@ public class BookCrudServiceImpl implements BookCrudService {
         bookRepository.save(book);
     }
 
-    private Book getBookEntityById(long id) {
-        return bookRepository.findByBookIdAndUser_UserId(id, sessionUserProviderService.getUserFromSession().getUserId())
-                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " id not found!"));
-    }
-
     private BookResponse convertBookToBookResponse(Book book) {
         BookResponse bookResponse = modelMapper.map(book, BookResponse.class);
 
@@ -66,7 +62,7 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     @Override
     public BookResponse fetchBookById(Long id) {
-        return convertBookToBookResponse(getBookEntityById(id));
+        return convertBookToBookResponse(bookRetrievalService.getBookOwnedByCurrentUserById(id));
     }
 
     @Override
@@ -87,14 +83,14 @@ public class BookCrudServiceImpl implements BookCrudService {
 
     @Override
     public void updateBook(Long bookId, BookRequest bookRequest) {
-        Book updatedBook = updateBookFromBookRequest(getBookEntityById(bookId), bookRequest);
+        Book updatedBook = updateBookFromBookRequest(bookRetrievalService.getBookOwnedByCurrentUserById(bookId), bookRequest);
 
         bookRepository.save(updatedBook);
     }
 
     private void checkBookExistsById(long id) {
         bookRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " id not found!"));
     }
 
     @Override
