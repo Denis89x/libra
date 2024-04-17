@@ -1,5 +1,6 @@
 package dev.lebenkov.libra.api.util.validation;
 
+import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -37,5 +38,12 @@ public class ErrorHandlingControllerAdvice {
                 .map(error -> new Violation(error.getField(), error.getDefaultMessage()))
                 .collect(Collectors.toList());
         return new ValidationErrorResponse(violations);
+    }
+
+    @ResponseBody
+    @ExceptionHandler(ObjectNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public String onProductTypeNotFoundException(ObjectNotFoundException e) {
+        return e.getMessage();
     }
 }

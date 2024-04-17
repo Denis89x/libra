@@ -46,16 +46,33 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
     @Override
     public List<GenreResponse> fetchAllGenres() {
-        return null;
+        return genreRepository.findAll().stream()
+                .map(this::convertGenreToGenreResponse)
+                .toList();
+    }
+
+    private Genre updateGenreFromGenreRequest(Genre genre, GenreRequest genreRequest) {
+        genre.setTitle(genreRequest.getTitle());
+
+        return genre;
     }
 
     @Override
     public void updateGenre(Long genreId, GenreRequest genreRequest) {
+        Genre genre = updateGenreFromGenreRequest(findGenreEntityByGenreId(genreId), genreRequest);
 
+        genreRepository.save(genre);
+    }
+
+    private void checkGenreExistsById(long id) {
+        genreRepository.findById(id)
+                .orElseThrow(() -> new ObjectNotFoundException("Genre with " + id + " not found!"));
     }
 
     @Override
     public void deleteGenreById(Long genreId) {
+        checkGenreExistsById(genreId);
 
+        genreRepository.deleteById(genreId);
     }
 }

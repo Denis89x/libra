@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class TradeRequest {
+public class Trade {
 
     @Id
     @Column(name = "request_id")
@@ -41,6 +41,6 @@ public class TradeRequest {
     @JoinColumn(name = "receiver_book_id")
     Book bookReceiver;
 
-    @OneToMany(mappedBy = "tradeRequest", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trade", fetch = FetchType.LAZY)
     List<TradeHistory> tradeHistories = new ArrayList<>();
 }
