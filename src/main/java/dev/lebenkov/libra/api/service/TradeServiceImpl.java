@@ -1,10 +1,11 @@
 package dev.lebenkov.libra.api.service;
 
-import dev.lebenkov.libra.storage.dto.TradeRequest;
 import dev.lebenkov.libra.storage.dto.TradeProcess;
+import dev.lebenkov.libra.storage.dto.TradeRequest;
+import dev.lebenkov.libra.storage.dto.TradeResponse;
 import dev.lebenkov.libra.storage.model.Book;
-import dev.lebenkov.libra.storage.model.TradeHistory;
 import dev.lebenkov.libra.storage.model.Trade;
+import dev.lebenkov.libra.storage.model.TradeHistory;
 import dev.lebenkov.libra.storage.model.User;
 import dev.lebenkov.libra.storage.repository.BookRepository;
 import dev.lebenkov.libra.storage.repository.TradeHistoryRepository;
@@ -38,8 +39,14 @@ public class TradeServiceImpl implements TradeService {
                 .status("Pending")
                 .tradeReceiver(userRetrievalService.findUserById((tradeRequest.getTradeReceiverId())))
                 .tradeSender(sessionUserProviderService.getUserFromSession())
-                .bookSender(bookRetrievalService.getBookById(tradeRequest.getBookSenderId()))
-                .bookReceiver(bookRetrievalService.getBookById(tradeRequest.getBookReceiverId()))
+                .bookSender(
+                        bookRetrievalService.getBookOwnedByUserById(tradeRequest.getBookSenderId(),
+                                sessionUserProviderService.getUserFromSession().getUserId())
+                )
+                .bookReceiver(
+                        bookRetrievalService.getBookOwnedByUserById(tradeRequest.getBookReceiverId(),
+                                tradeRequest.getTradeReceiverId())
+                )
                 .build();
     }
 
@@ -109,4 +116,19 @@ public class TradeServiceImpl implements TradeService {
         }
     }
 
+    private TradeResponse convertTradeToTradeResponse(Trade trade) {
+        return TradeResponse.builder()
+                .tradeId(trade.getRequestId())
+                .status(trade.getStatus())
+                .senderUsername(trade.getTradeSender().getUsername())
+                .senderBookName(trade.getBookSender().getTitle())
+                .receiverBookName(trade.getBookReceiver().getTitle())
+                .build();
+    }
+
+    @Override
+    public List<TradeResponse> getAllTrades() {
+        return tradeRepository.findAllByTradeReceiverAndStatus(sessionUserProviderService.getUserFromSession(), "Pending")
+                .stream().map(this::convertTradeToTradeResponse).toList();
+    }
 }

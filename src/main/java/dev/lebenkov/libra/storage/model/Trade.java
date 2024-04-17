@@ -41,6 +41,6 @@ public class Trade {
     @JoinColumn(name = "receiver_book_id")
     Book bookReceiver;
 
-    @OneToMany(mappedBy = "tradeRequest", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "trade", fetch = FetchType.LAZY)
     List<TradeHistory> tradeHistories = new ArrayList<>();
 }
