@@ -2,7 +2,7 @@ package dev.lebenkov.libra.api.service;
 
 import dev.lebenkov.libra.storage.dto.TradeProcess;
 import dev.lebenkov.libra.storage.dto.TradeRequest;
-import dev.lebenkov.libra.storage.dto.TradeResponse;
+import dev.lebenkov.libra.storage.enums.TradeStatus;
 import dev.lebenkov.libra.storage.model.Book;
 import dev.lebenkov.libra.storage.model.Trade;
 import dev.lebenkov.libra.storage.model.TradeHistory;
@@ -22,7 +22,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TradeServiceImpl implements TradeService {
+public class TradeManagementServiceImpl implements TradeManagementService {
 
     TradeRepository tradeRepository;
 
@@ -36,7 +36,7 @@ public class TradeServiceImpl implements TradeService {
 
     private Trade createTradeRequestByTradeRequestDto(TradeRequest tradeRequest) {
         return Trade.builder()
-                .status("Pending")
+                .status(TradeStatus.Pending.name())
                 .tradeReceiver(userRetrievalService.findUserById((tradeRequest.getTradeReceiverId())))
                 .tradeSender(sessionUserProviderService.getUserFromSession())
                 .bookSender(
@@ -72,7 +72,7 @@ public class TradeServiceImpl implements TradeService {
 
     private void acceptTradeRequest(Trade trade) {
         swapBooksOwnersAndSave(trade);
-        updateTradeRequestStatus(trade, "Accepted");
+        updateTradeRequestStatus(trade, TradeStatus.Accepted.name());
     }
 
     private void swapBooksOwnersAndSave(Trade trade) {
@@ -101,7 +101,7 @@ public class TradeServiceImpl implements TradeService {
     }
 
     private void cancelTradeRequest(Trade trade) {
-        trade.setStatus("Rejected");
+        trade.setStatus(TradeStatus.Rejected.name());
 
         saveTradeRequest(trade);
     }
@@ -109,26 +109,10 @@ public class TradeServiceImpl implements TradeService {
     @Override
     @Transactional
     public void processTradeRequest(TradeProcess tradeProcess) {
-        if (tradeProcess.getResultStatus().equals("Accepted")) {
-            acceptTradeRequest(tradeRetrievalService.findTradeRequestById(tradeProcess.getTradeRequestId()));
+        if (tradeProcess.getResultStatus().equals(TradeStatus.Accepted.name())) {
+            acceptTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
         } else {
-            cancelTradeRequest(tradeRetrievalService.findTradeRequestById(tradeProcess.getTradeRequestId()));
+            cancelTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
         }
-    }
-
-    private TradeResponse convertTradeToTradeResponse(Trade trade) {
-        return TradeResponse.builder()
-                .tradeId(trade.getRequestId())
-                .status(trade.getStatus())
-                .senderUsername(trade.getTradeSender().getUsername())
-                .senderBookName(trade.getBookSender().getTitle())
-                .receiverBookName(trade.getBookReceiver().getTitle())
-                .build();
-    }
-
-    @Override
-    public List<TradeResponse> getAllTrades() {
-        return tradeRepository.findAllByTradeReceiverAndStatus(sessionUserProviderService.getUserFromSession(), "Pending")
-                .stream().map(this::convertTradeToTradeResponse).toList();
     }
 }

@@ -1,7 +1,7 @@
 package dev.lebenkov.libra.api.service;
 
 import dev.lebenkov.libra.api.security.JwtUtil;
-import dev.lebenkov.libra.api.util.exception.UserAlreadyExistsException;
+import dev.lebenkov.libra.api.util.exception.ObjectAlreadyExistsException;
 import dev.lebenkov.libra.storage.dto.AuthResponse;
 import dev.lebenkov.libra.storage.dto.UserRegistrationRequest;
 import dev.lebenkov.libra.storage.model.User;
@@ -34,7 +34,7 @@ public class RegistrationServiceImpl implements RegistrationService {
     private void checkExistingUser(String username) {
         userRepository.findByUsername(username)
                 .ifPresent(existingAccount -> {
-                    throw new UserAlreadyExistsException("User with username " + username + " already exists.");
+                    throw new ObjectAlreadyExistsException("User with username " + username + " already exists.");
                 });
     }
 
