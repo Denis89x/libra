@@ -23,4 +23,7 @@ public class BookResponse {
 
     @JsonProperty("genre")
     GenreResponse genreResponse;
+
+    @JsonProperty("book_owner")
+    String bookOwner;
 }

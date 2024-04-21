@@ -11,5 +11,7 @@ public interface TradeService {
 
     void processTradeRequest(TradeProcess tradeProcess);
 
-    List<TradeResponse> getAllTrades();
+    List<TradeResponse> getAllPendingTrades();
+
+    TradeResponse getTrade(Long tradeId);
 }

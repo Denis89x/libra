@@ -1,6 +1,7 @@
 package dev.lebenkov.libra.api.controller;
 
-import dev.lebenkov.libra.api.service.BookCrudService;
+import dev.lebenkov.libra.api.service.BookManagementService;
+import dev.lebenkov.libra.api.service.BookReadService;
 import dev.lebenkov.libra.storage.dto.BookRequest;
 import dev.lebenkov.libra.storage.dto.BookResponse;
 import lombok.AccessLevel;
@@ -20,21 +21,27 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class BookController {
 
-    BookCrudService bookCrudService;
+    BookReadService bookReadService;
+    BookManagementService bookManagementService;
 
     @GetMapping("/{book_id}")
     public ResponseEntity<BookResponse> fetchBookById(@PathVariable("book_id") Long bookId) {
-        return new ResponseEntity<>(bookCrudService.fetchBookById(bookId), HttpStatus.OK);
+        return new ResponseEntity<>(bookReadService.fetchBookById(bookId), HttpStatus.OK);
     }
 
     @GetMapping
     public ResponseEntity<List<BookResponse>> fetchAllBooks() {
-        return new ResponseEntity<>(bookCrudService.fetchAllBooks(), HttpStatus.OK);
+        return new ResponseEntity<>(bookReadService.fetchAllBooks(), HttpStatus.OK);
+    }
+
+    @GetMapping("/get-all/{user_id}")
+    public ResponseEntity<List<BookResponse>> fetchAllBooksByUserId(@PathVariable("user_id") Long userId) {
+        return new ResponseEntity<>(bookReadService.fetchAllBooksByUserId(userId), HttpStatus.OK);
     }
 
     @PostMapping
     public ResponseEntity<String> createBook(@RequestBody BookRequest bookRequest) {
-        bookCrudService.createBook(bookRequest);
+        bookManagementService.createBook(bookRequest);
         return ResponseEntity.ok("Book was successfully added!");
     }
 
@@ -42,13 +49,13 @@ public class BookController {
     public ResponseEntity<String> updateBook(
             @PathVariable("book_id") Long bookId,
             @RequestBody BookRequest bookRequest) {
-        bookCrudService.updateBook(bookId, bookRequest);
+        bookManagementService.updateBook(bookId, bookRequest);
         return ResponseEntity.ok("Book was successfully updated!");
     }
 
     @DeleteMapping("/{book_id}")
     public ResponseEntity<String> deleteBook(@PathVariable("book_id") Long bookId) {
-        bookCrudService.deleteBookById(bookId);
+        bookManagementService.deleteBookById(bookId);
         return ResponseEntity.ok("Book was successfully deleted!");
     }
 }

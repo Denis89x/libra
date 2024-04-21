@@ -1,5 +1,6 @@
 package dev.lebenkov.libra.api.service;
 
+import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import dev.lebenkov.libra.storage.dto.TradeProcess;
 import dev.lebenkov.libra.storage.dto.TradeRequest;
 import dev.lebenkov.libra.storage.dto.TradeResponse;
@@ -110,9 +111,9 @@ public class TradeServiceImpl implements TradeService {
     @Transactional
     public void processTradeRequest(TradeProcess tradeProcess) {
         if (tradeProcess.getResultStatus().equals("Accepted")) {
-            acceptTradeRequest(tradeRetrievalService.findTradeRequestById(tradeProcess.getTradeRequestId()));
+            acceptTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
         } else {
-            cancelTradeRequest(tradeRetrievalService.findTradeRequestById(tradeProcess.getTradeRequestId()));
+            cancelTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
         }
     }
 
@@ -127,8 +128,15 @@ public class TradeServiceImpl implements TradeService {
     }
 
     @Override
-    public List<TradeResponse> getAllTrades() {
+    public List<TradeResponse> getAllPendingTrades() {
         return tradeRepository.findAllByTradeReceiverAndStatus(sessionUserProviderService.getUserFromSession(), "Pending")
                 .stream().map(this::convertTradeToTradeResponse).toList();
+    }
+
+    @Override
+    public TradeResponse getTrade(Long tradeId) {
+        return convertTradeToTradeResponse(tradeRepository.findByRequestIdAndTradeReceiverOrTradeSender(
+                        tradeId, sessionUserProviderService.getUserFromSession())
+                .orElseThrow(() -> new ObjectNotFoundException("Trade not found")));
     }
 }

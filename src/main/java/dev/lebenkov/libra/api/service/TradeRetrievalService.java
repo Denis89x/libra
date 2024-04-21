@@ -3,5 +3,5 @@ package dev.lebenkov.libra.api.service;
 import dev.lebenkov.libra.storage.model.Trade;
 
 public interface TradeRetrievalService {
-    Trade findTradeRequestById(Long tradeRequestId);
+    Trade findTradeById(Long tradeRequestId);
 }

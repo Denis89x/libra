@@ -16,7 +16,7 @@ public class TradeRetrievalServiceImpl implements TradeRetrievalService {
     TradeRepository tradeRepository;
 
     @Override
-    public Trade findTradeRequestById(Long tradeRequestId) {
+    public Trade findTradeById(Long tradeRequestId) {
         return tradeRepository.findById(tradeRequestId).
                 orElseThrow(() -> new ObjectNotFoundException("TradeRequest with id " + tradeRequestId + " not found"));
     }

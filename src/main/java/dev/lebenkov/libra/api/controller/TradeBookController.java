@@ -35,6 +35,11 @@ public class TradeBookController {
 
     @GetMapping
     public ResponseEntity<List<TradeResponse>> getTrades() {
-        return new ResponseEntity<>(tradeService.getAllTrades(), HttpStatus.OK);
+        return new ResponseEntity<>(tradeService.getAllPendingTrades(), HttpStatus.OK);
+    }
+
+    @GetMapping("/{trade_id}")
+    public ResponseEntity<TradeResponse> getTrade(@PathVariable("trade_id") Long tradeId) {
+        return new ResponseEntity<>(tradeService.getTrade(tradeId), HttpStatus.OK);
     }
 }

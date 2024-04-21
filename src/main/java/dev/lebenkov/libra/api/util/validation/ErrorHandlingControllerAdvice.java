@@ -1,5 +1,6 @@
 package dev.lebenkov.libra.api.util.validation;
 
+import dev.lebenkov.libra.api.util.exception.ObjectAlreadyExistsException;
 import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
@@ -44,6 +45,14 @@ public class ErrorHandlingControllerAdvice {
     @ExceptionHandler(ObjectNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String onProductTypeNotFoundException(ObjectNotFoundException e) {
+        return e.getMessage();
+    }
+
+
+    @ResponseBody
+    @ExceptionHandler(ObjectAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public String onProductTypeNotFoundException(ObjectAlreadyExistsException e) {
         return e.getMessage();
     }
 }
