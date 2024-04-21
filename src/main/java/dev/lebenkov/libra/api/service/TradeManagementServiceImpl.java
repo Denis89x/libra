@@ -101,7 +101,7 @@ public class TradeManagementServiceImpl implements TradeManagementService {
     }
 
     private void cancelTradeRequest(Trade trade) {
-        trade.setStatus("Rejected");
+        trade.setStatus(TradeStatus.Rejected.name());
 
         saveTradeRequest(trade);
     }
