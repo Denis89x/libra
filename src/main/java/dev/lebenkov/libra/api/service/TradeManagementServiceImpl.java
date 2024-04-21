@@ -2,6 +2,7 @@ package dev.lebenkov.libra.api.service;
 
 import dev.lebenkov.libra.storage.dto.TradeProcess;
 import dev.lebenkov.libra.storage.dto.TradeRequest;
+import dev.lebenkov.libra.storage.enums.TradeStatus;
 import dev.lebenkov.libra.storage.model.Book;
 import dev.lebenkov.libra.storage.model.Trade;
 import dev.lebenkov.libra.storage.model.TradeHistory;
@@ -35,7 +36,7 @@ public class TradeManagementServiceImpl implements TradeManagementService {
 
     private Trade createTradeRequestByTradeRequestDto(TradeRequest tradeRequest) {
         return Trade.builder()
-                .status("Pending")
+                .status(TradeStatus.Pending.name())
                 .tradeReceiver(userRetrievalService.findUserById((tradeRequest.getTradeReceiverId())))
                 .tradeSender(sessionUserProviderService.getUserFromSession())
                 .bookSender(
@@ -71,7 +72,7 @@ public class TradeManagementServiceImpl implements TradeManagementService {
 
     private void acceptTradeRequest(Trade trade) {
         swapBooksOwnersAndSave(trade);
-        updateTradeRequestStatus(trade, "Accepted");
+        updateTradeRequestStatus(trade, TradeStatus.Accepted.name());
     }
 
     private void swapBooksOwnersAndSave(Trade trade) {
@@ -108,7 +109,7 @@ public class TradeManagementServiceImpl implements TradeManagementService {
     @Override
     @Transactional
     public void processTradeRequest(TradeProcess tradeProcess) {
-        if (tradeProcess.getResultStatus().equals("Accepted")) {
+        if (tradeProcess.getResultStatus().equals(TradeStatus.Accepted.name())) {
             acceptTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
         } else {
             cancelTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
