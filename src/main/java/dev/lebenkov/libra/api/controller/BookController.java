@@ -34,7 +34,7 @@ public class BookController {
         return new ResponseEntity<>(bookReadService.fetchAllBooks(), HttpStatus.OK);
     }
 
-    @GetMapping("/get-all/{user_id}")
+    @GetMapping("/get-all-users-book/{user_id}")
     public ResponseEntity<List<BookResponse>> fetchAllBooksByUserId(@PathVariable("user_id") Long userId) {
         return new ResponseEntity<>(bookReadService.fetchAllBooksByUserId(userId), HttpStatus.OK);
     }

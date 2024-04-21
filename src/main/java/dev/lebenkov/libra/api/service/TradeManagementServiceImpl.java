@@ -1,9 +1,7 @@
 package dev.lebenkov.libra.api.service;
 
-import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import dev.lebenkov.libra.storage.dto.TradeProcess;
 import dev.lebenkov.libra.storage.dto.TradeRequest;
-import dev.lebenkov.libra.storage.dto.TradeResponse;
 import dev.lebenkov.libra.storage.model.Book;
 import dev.lebenkov.libra.storage.model.Trade;
 import dev.lebenkov.libra.storage.model.TradeHistory;
@@ -23,7 +21,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class TradeServiceImpl implements TradeService {
+public class TradeManagementServiceImpl implements TradeManagementService {
 
     TradeRepository tradeRepository;
 
@@ -115,28 +113,5 @@ public class TradeServiceImpl implements TradeService {
         } else {
             cancelTradeRequest(tradeRetrievalService.findTradeById(tradeProcess.getTradeRequestId()));
         }
-    }
-
-    private TradeResponse convertTradeToTradeResponse(Trade trade) {
-        return TradeResponse.builder()
-                .tradeId(trade.getRequestId())
-                .status(trade.getStatus())
-                .senderUsername(trade.getTradeSender().getUsername())
-                .senderBookName(trade.getBookSender().getTitle())
-                .receiverBookName(trade.getBookReceiver().getTitle())
-                .build();
-    }
-
-    @Override
-    public List<TradeResponse> getAllPendingTrades() {
-        return tradeRepository.findAllByTradeReceiverAndStatus(sessionUserProviderService.getUserFromSession(), "Pending")
-                .stream().map(this::convertTradeToTradeResponse).toList();
-    }
-
-    @Override
-    public TradeResponse getTrade(Long tradeId) {
-        return convertTradeToTradeResponse(tradeRepository.findByRequestIdAndTradeReceiverOrTradeSender(
-                        tradeId, sessionUserProviderService.getUserFromSession())
-                .orElseThrow(() -> new ObjectNotFoundException("Trade not found")));
     }
 }
