@@ -76,7 +76,7 @@ class GenreCrudServiceTest {
     }
 
     @Test
-    void GenreCrudService_FetchAllGenres_ReturnsGenreResponses() {
+    public void GenreCrudService_FetchAllGenres_ReturnsGenreResponses() {
         // Arrange
         Genre genre1 = Genre.builder()
                 .title("testTitle")
@@ -98,10 +98,30 @@ class GenreCrudServiceTest {
     }
 
     @Test
-    void updateGenre() {
+    public void GenreCrudService_UpdateGenre_ReturnsVoid() {
+        // Arrange
+        long genreId = 1;
+
+        GenreRequest genreRequest = GenreRequest.builder()
+                .title("testTitle")
+                .build();
+
+        Genre genre = Genre.builder()
+                .genreId(genreId)
+                .title("testTitle")
+                .build();
+
+        Mockito.when(mockGenreRepository.findByGenreId(any(Long.class))).thenReturn(Optional.of(genre));
+        Mockito.when(mockGenreRepository.save(any(Genre.class))).thenReturn(genre);
+
+        // Act
+        genreCrudService.updateGenre(genreId, genreRequest);
+
+        // Assert
+        Mockito.verify(mockGenreRepository, Mockito.times(1)).save(any(Genre.class));
     }
 
     @Test
-    void deleteGenreById() {
+    public void deleteGenreById() {
     }
 }
