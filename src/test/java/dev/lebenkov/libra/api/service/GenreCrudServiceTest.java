@@ -23,13 +23,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 @ExtendWith(MockitoExtension.class)
 class GenreCrudServiceTest {
 
-    private final ModelMapper modelMapper = new ModelMapper();
-
     @Mock
     private GenreRepository mockGenreRepository;
 
     @Mock
     private GenreRetrievalService genreRetrievalService;
+
+    private final ModelMapper modelMapper = new ModelMapper();
 
     private GenreCrudService genreCrudService;
 
