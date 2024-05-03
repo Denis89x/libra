@@ -28,13 +28,16 @@ class GenreCrudServiceTest {
     @Mock
     private GenreRepository mockGenreRepository;
 
+    @Mock
+    private GenreRetrievalService genreRetrievalService;
+
     private GenreCrudService genreCrudService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        genreCrudService = new GenreCrudServiceImpl(modelMapper, mockGenreRepository);
+        genreCrudService = new GenreCrudServiceImpl(modelMapper, mockGenreRepository, genreRetrievalService);
     }
 
     @Test
@@ -67,7 +70,7 @@ class GenreCrudServiceTest {
                 .title("testTitle")
                 .build();
 
-        Mockito.when(mockGenreRepository.findByGenreId(Mockito.anyLong())).thenReturn(Optional.of(genre));
+        Mockito.when(genreRetrievalService.fetchGenreEntityByGenreId(Mockito.anyLong())).thenReturn(genre);
 
         // Act
         GenreResponse genreResponse = genreCrudService.fetchGenreById(genreId);
@@ -112,7 +115,7 @@ class GenreCrudServiceTest {
                 .title("testTitle")
                 .build();
 
-        Mockito.when(mockGenreRepository.findByGenreId(Mockito.anyLong())).thenReturn(Optional.of(genre));
+        Mockito.when(genreRetrievalService.fetchGenreEntityByGenreId(Mockito.anyLong())).thenReturn(genre);
         Mockito.when(mockGenreRepository.save(Mockito.any(Genre.class))).thenReturn(genre);
 
         // Act

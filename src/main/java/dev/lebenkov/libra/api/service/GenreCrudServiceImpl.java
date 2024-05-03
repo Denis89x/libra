@@ -20,6 +20,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
     ModelMapper modelMapper;
     GenreRepository genreRepository;
+    GenreRetrievalService genreRetrievalService;
 
     private Genre convertGenreRequestToGenre(GenreRequest genreRequest) {
         return modelMapper.map(genreRequest, Genre.class);
@@ -34,14 +35,9 @@ public class GenreCrudServiceImpl implements GenreCrudService {
         return modelMapper.map(genre, GenreResponse.class);
     }
 
-    private Genre findGenreEntityByGenreId(long genreId) {
-        return genreRepository.findByGenreId(genreId)
-                .orElseThrow(() -> new ObjectNotFoundException("Genre with " + genreId + " id not found!"));
-    }
-
     @Override
     public GenreResponse fetchGenreById(Long genreId) {
-        return convertGenreToGenreResponse(findGenreEntityByGenreId(genreId));
+        return convertGenreToGenreResponse(genreRetrievalService.fetchGenreEntityByGenreId(genreId));
     }
 
     @Override
@@ -59,7 +55,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
     @Override
     public void updateGenre(Long genreId, GenreRequest genreRequest) {
-        Genre genre = updateGenreFromGenreRequest(findGenreEntityByGenreId(genreId), genreRequest);
+        Genre genre = updateGenreFromGenreRequest(genreRetrievalService.fetchGenreEntityByGenreId(genreId), genreRequest);
 
         genreRepository.save(genre);
     }
