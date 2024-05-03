@@ -1,0 +1,88 @@
+package dev.lebenkov.libra.api.service;
+
+import dev.lebenkov.libra.storage.dto.GenreRequest;
+import dev.lebenkov.libra.storage.dto.GenreResponse;
+import dev.lebenkov.libra.storage.model.Genre;
+import dev.lebenkov.libra.storage.repository.GenreRepository;
+import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.modelmapper.ModelMapper;
+
+import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.any;
+
+@ExtendWith(MockitoExtension.class)
+class GenreCrudServiceTest {
+
+    private final ModelMapper modelMapper = new ModelMapper();
+
+    @Mock
+    private GenreRepository mockGenreRepository;
+
+    private GenreCrudService genreCrudService;
+
+    @BeforeEach
+    void setUp() {
+        MockitoAnnotations.openMocks(this);
+
+        genreCrudService = new GenreCrudServiceImpl(modelMapper, mockGenreRepository);
+    }
+
+    @Test
+    void GenreCrudService_CreateGenre_ReturnVoid() {
+        // Arrange
+        GenreRequest genreRequest = GenreRequest.builder()
+                .title("testTitle")
+                .build();
+
+        Genre genre = Genre.builder()
+                .title("testTitle")
+                .build();
+
+        Mockito.when(mockGenreRepository.save(any(Genre.class))).thenReturn(genre);
+
+        // Act
+        genreCrudService.createGenre(genreRequest);
+
+        // Assert
+        Mockito.verify(mockGenreRepository, Mockito.times(1)).save(any(Genre.class));
+    }
+
+    @Test
+    public void GenreCrudService_FetchGenreById_ReturnsGenreResponse() {
+        // Arrange
+        long genreId = 1;
+
+        Genre genre = Genre.builder()
+                .genreId(genreId)
+                .title("testTitle")
+                .build();
+
+        Mockito.when(mockGenreRepository.findByGenreId(any(Long.class))).thenReturn(Optional.of(genre));
+
+        // Act
+        GenreResponse genreResponse = genreCrudService.fetchGenreById(genreId);
+
+        // Assert
+        Assertions.assertThat(genreResponse).isNotNull();
+    }
+
+    @Test
+    void fetchAllGenres() {
+    }
+
+    @Test
+    void updateGenre() {
+    }
+
+    @Test
+    void deleteGenreById() {
+    }
+}

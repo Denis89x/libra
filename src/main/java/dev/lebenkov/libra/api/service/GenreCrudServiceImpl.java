@@ -36,7 +36,7 @@ public class GenreCrudServiceImpl implements GenreCrudService {
 
     private Genre findGenreEntityByGenreId(long genreId) {
         return genreRepository.findByGenreId(genreId)
-                .orElseThrow(() -> new ObjectNotFoundException("Genre with " + genreId + " not found!"));
+                .orElseThrow(() -> new ObjectNotFoundException("Genre with " + genreId + " id not found!"));
     }
 
     @Override
