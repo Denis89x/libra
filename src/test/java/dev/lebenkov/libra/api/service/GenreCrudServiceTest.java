@@ -1,5 +1,6 @@
 package dev.lebenkov.libra.api.service;
 
+import dev.lebenkov.libra.api.util.exception.ObjectNotFoundException;
 import dev.lebenkov.libra.storage.dto.GenreRequest;
 import dev.lebenkov.libra.storage.dto.GenreResponse;
 import dev.lebenkov.libra.storage.model.Genre;
@@ -17,7 +18,7 @@ import org.modelmapper.ModelMapper;
 import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.ArgumentMatchers.any;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
 class GenreCrudServiceTest {
@@ -47,13 +48,13 @@ class GenreCrudServiceTest {
                 .title("testTitle")
                 .build();
 
-        Mockito.when(mockGenreRepository.save(any(Genre.class))).thenReturn(genre);
+        Mockito.when(mockGenreRepository.save(Mockito.any(Genre.class))).thenReturn(genre);
 
         // Act
         genreCrudService.createGenre(genreRequest);
 
         // Assert
-        Mockito.verify(mockGenreRepository, Mockito.times(1)).save(any(Genre.class));
+        Mockito.verify(mockGenreRepository, Mockito.times(1)).save(Mockito.any(Genre.class));
     }
 
     @Test
@@ -66,7 +67,7 @@ class GenreCrudServiceTest {
                 .title("testTitle")
                 .build();
 
-        Mockito.when(mockGenreRepository.findByGenreId(any(Long.class))).thenReturn(Optional.of(genre));
+        Mockito.when(mockGenreRepository.findByGenreId(Mockito.anyLong())).thenReturn(Optional.of(genre));
 
         // Act
         GenreResponse genreResponse = genreCrudService.fetchGenreById(genreId);
@@ -111,17 +112,42 @@ class GenreCrudServiceTest {
                 .title("testTitle")
                 .build();
 
-        Mockito.when(mockGenreRepository.findByGenreId(any(Long.class))).thenReturn(Optional.of(genre));
-        Mockito.when(mockGenreRepository.save(any(Genre.class))).thenReturn(genre);
+        Mockito.when(mockGenreRepository.findByGenreId(Mockito.anyLong())).thenReturn(Optional.of(genre));
+        Mockito.when(mockGenreRepository.save(Mockito.any(Genre.class))).thenReturn(genre);
 
         // Act
         genreCrudService.updateGenre(genreId, genreRequest);
 
         // Assert
-        Mockito.verify(mockGenreRepository, Mockito.times(1)).save(any(Genre.class));
+        Mockito.verify(mockGenreRepository, Mockito.times(1)).save(Mockito.any(Genre.class));
     }
 
     @Test
-    public void deleteGenreById() {
+    public void GenreCrudService_DeleteGenreById_ReturnsObjectNotFoundException() {
+        // Arrange
+        long genreId = 1;
+
+        // Act and Assert
+        assertThrows(ObjectNotFoundException.class, () -> genreCrudService.deleteGenreById(genreId));
+    }
+
+    @Test
+    public void GenreCrudService_DeleteGenreById_ReturnsVoid() {
+        // Arrange
+        long genreId = 1;
+
+        Genre genre = Genre.builder()
+                .genreId(genreId)
+                .title("testTitle")
+                .build();
+
+        Mockito.when(mockGenreRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(genre));
+
+        // Act
+        genreCrudService.deleteGenreById(genreId);
+
+        // Assert
+        Mockito.verify(mockGenreRepository, Mockito.times(1)).findById(Mockito.anyLong());
+        Mockito.verify(mockGenreRepository, Mockito.times(1)).deleteById(Mockito.anyLong());
     }
 }
