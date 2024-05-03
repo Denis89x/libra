@@ -7,6 +7,7 @@ import lombok.experimental.FieldDefaults;
 import java.util.ArrayList;
 import java.util.List;
 
+@ToString
 @Getter
 @Setter
 @Entity
@@ -41,6 +42,7 @@ public class Trade {
     @JoinColumn(name = "receiver_book_id")
     Book bookReceiver;
 
+    @ToString.Exclude
     @OneToMany(mappedBy = "trade", fetch = FetchType.LAZY)
     List<TradeHistory> tradeHistories = new ArrayList<>();
 }
