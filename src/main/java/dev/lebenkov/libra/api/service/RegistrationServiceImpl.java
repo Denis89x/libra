@@ -23,12 +23,10 @@ import java.time.LocalDate;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class RegistrationServiceImpl implements RegistrationService {
 
-    UserRepository userRepository;
-
-    PasswordEncoder passwordEncoder;
-
     JwtUtil jwtUtil;
     TokenService tokenService;
+    UserRepository userRepository;
+    PasswordEncoder passwordEncoder;
     AccountDetailsService accountDetailsService;
 
     private void checkExistingUser(String username) {
