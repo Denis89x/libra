@@ -14,6 +14,7 @@ import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -75,7 +76,25 @@ class GenreCrudServiceTest {
     }
 
     @Test
-    void fetchAllGenres() {
+    void GenreCrudService_FetchAllGenres_ReturnsGenreResponses() {
+        // Arrange
+        Genre genre1 = Genre.builder()
+                .title("testTitle")
+                .build();
+
+        Genre genre2 = Genre.builder()
+                .title("testTitle")
+                .build();
+
+        Mockito.when(mockGenreRepository.findAll()).thenReturn(List.of(genre1, genre2));
+
+        // Act
+        List<GenreResponse> genreResponses = genreCrudService.fetchAllGenres();
+
+        // Assert
+        Assertions.assertThat(genreResponses).isNotNull();
+        Assertions.assertThat(genreResponses.size()).isEqualTo(2);
+        Assertions.assertThat(genreResponses.get(0).getTitle()).isEqualTo(genre1.getTitle());
     }
 
     @Test
