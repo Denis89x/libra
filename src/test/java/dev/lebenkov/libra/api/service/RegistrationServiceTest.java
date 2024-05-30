@@ -28,9 +28,6 @@ class RegistrationServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private TokenRepository tokenRepository;
-
-    @Mock
     private JwtUtil jwtUtil;
 
     @Mock
