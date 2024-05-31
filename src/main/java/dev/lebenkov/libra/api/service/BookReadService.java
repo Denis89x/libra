@@ -6,6 +6,8 @@ import java.util.List;
 
 public interface BookReadService {
     BookResponse fetchBookById(Long id);
+
     List<BookResponse> fetchAllBooks();
+
     List<BookResponse> fetchAllBooksByUserId(Long userId);
 }
