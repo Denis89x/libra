@@ -15,7 +15,7 @@ import java.util.List;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource(properties = {"spring.flyway.enabled=false", "spring.jpa.hibernate.ddl-auto=create-drop", "spring.jpa.show-sql=true"})
-class TokenRepositoryTest {
+public class TokenRepositoryTest {
 
     @Autowired
     private TokenRepository tokenRepository;

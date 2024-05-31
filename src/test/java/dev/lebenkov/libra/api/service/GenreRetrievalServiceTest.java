@@ -11,12 +11,12 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-class GenreRetrievalServiceTest {
+public class GenreRetrievalServiceTest {
 
     @Mock
     private GenreRepository mockGenreRepository;
 
-    GenreRetrievalService genreRetrievalService;
+    private GenreRetrievalService genreRetrievalService;
 
     @BeforeEach
     void setUp() {
