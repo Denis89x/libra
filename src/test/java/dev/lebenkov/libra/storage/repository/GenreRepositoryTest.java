@@ -12,7 +12,7 @@ import org.springframework.test.context.TestPropertySource;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource(properties = {"spring.flyway.enabled=false", "spring.jpa.hibernate.ddl-auto=create-drop", "spring.jpa.show-sql=true"})
-class GenreRepositoryTest {
+public class GenreRepositoryTest {
 
     @Autowired
     private GenreRepository genreRepository;

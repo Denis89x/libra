@@ -19,7 +19,7 @@ import java.util.Optional;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource(properties = {"spring.flyway.enabled=false", "spring.jpa.hibernate.ddl-auto=create-drop", "spring.jpa.show-sql=true"})
-class TradeRepositoryTest {
+public class TradeRepositoryTest {
 
     @Autowired
     private UserRepository userRepository;

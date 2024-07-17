@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.Optional;
 
-class GenreRetrievalServiceTest {
+public class GenreRetrievalServiceTest {
 
     @Mock
     private GenreRepository mockGenreRepository;
