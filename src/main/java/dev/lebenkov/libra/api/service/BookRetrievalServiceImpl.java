@@ -28,10 +28,4 @@ public class BookRetrievalServiceImpl implements BookRetrievalService {
         return bookRepository.findByBookIdAndUser_UserId(bookId, userId)
                 .orElseThrow(() -> new ObjectNotFoundException("Book with " + bookId + " id not found!"));
     }
-
-    @Override
-    public Book getBookById(Long id) {
-        return bookRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " not found!"));
-    }
 }
