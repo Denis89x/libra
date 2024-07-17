@@ -21,7 +21,7 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @ExtendWith(MockitoExtension.class)
-class GenreCrudServiceTest {
+public class GenreCrudServiceTest {
 
     @Mock
     private GenreRepository mockGenreRepository;

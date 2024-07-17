@@ -16,7 +16,7 @@ import java.util.List;
 @DataJpaTest
 @AutoConfigureTestDatabase(connection = EmbeddedDatabaseConnection.H2)
 @TestPropertySource(properties = {"spring.flyway.enabled=false", "spring.jpa.hibernate.ddl-auto=create-drop", "spring.jpa.show-sql=true"})
-class BookRepositoryTest {
+public class BookRepositoryTest {
 
     @Autowired
     private BookRepository bookRepository;

@@ -54,4 +54,17 @@ public class TradeBookController {
     public ResponseEntity<TradeResponse> getTrade(@PathVariable("trade_id") Long tradeId) {
         return new ResponseEntity<>(tradeReadService.getTrade(tradeId), HttpStatus.OK);
     }
+
+    // TODO: Метод для просмотра отправленных трейдов
+
+
+
+    // TODO: Метод для отмены отправленного трейда
+
+
+
+    // TODO: Метод для просмотра всех трейдов (принятых, отклонённых)
+
+
+
 }
