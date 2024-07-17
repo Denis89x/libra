@@ -33,7 +33,7 @@ public class GenreController {
     @PostMapping
     public ResponseEntity<String> createGenre(@RequestBody GenreRequest genreRequest) {
         genreCrudService.createGenre(genreRequest);
-        return ResponseEntity.ok("Genre was successfully added!");
+        return new ResponseEntity<>("Genre was successfully created", HttpStatus.CREATED);
     }
 
     @PutMapping("/{genre_id}")

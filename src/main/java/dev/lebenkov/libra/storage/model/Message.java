@@ -38,4 +38,7 @@ public class Message {
     @JsonProperty("send_date")
     @Column(name = "send_date")
     LocalDate sendDate;
+
+    @Column(name = "edited")
+    Boolean isEdited;
 }

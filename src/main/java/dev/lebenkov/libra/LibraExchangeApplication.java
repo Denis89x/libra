@@ -9,5 +9,4 @@ public class LibraExchangeApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LibraExchangeApplication.class, args);
 	}
-
 }
