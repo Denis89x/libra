@@ -37,14 +37,9 @@ public class BookManagementServiceImpl implements BookManagementService {
         bookRepository.save(book);
     }
 
-    private void checkBookExistsById(long id) { // TODO: Change this logic
-        bookRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("Book with " + id + " id not found!"));
-    }
-
     @Override
     public void deleteBookById(Long id) {
-        checkBookExistsById(id);
+        bookRetrievalService.getBookOwnedByCurrentUserById(id);
 
         bookRepository.deleteById(id);
     }

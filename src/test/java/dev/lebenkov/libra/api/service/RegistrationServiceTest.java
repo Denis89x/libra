@@ -4,7 +4,6 @@ import dev.lebenkov.libra.api.security.JwtUtil;
 import dev.lebenkov.libra.storage.dto.AuthResponse;
 import dev.lebenkov.libra.storage.dto.UserRegistrationRequest;
 import dev.lebenkov.libra.storage.model.User;
-import dev.lebenkov.libra.storage.repository.TokenRepository;
 import dev.lebenkov.libra.storage.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
